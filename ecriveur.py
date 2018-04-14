@@ -7,7 +7,7 @@ import datetime
 
 AUTHOR = 1 # On ne peut pas publier des articles avec l'API pour un autre auteur que celui qui se connecte
 
-FILE = "posts3.csv"
+FILE = "data/posts3.csv"
 
 USER = 'ben'
 PYTHONAPP = "od0B LIm2 HQUo wbMq n3R6 gwq6"
@@ -50,28 +50,23 @@ def process(row):
     content = row[16]
     excerpt = ""
 
+    print(title)
     p = create_post(date_pub, title, slug, content, excerpt)
     #print(p)
     r = publier(p)
-        print(r)
+    return r
+    #print(r)
 
 
-
+nb = 0
 with open(FILE) as csvfile:
     spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
-    print("yo")
     for row in spamreader:
-        process(row)
+        a = process(row)
+        if a:
+            nb += 1
 
-post = {'date': '2017-06-19T20:00:35',
-        'title': 'First REST API post',
-        'slug': 'rest-api-1',
-        'status': 'publish',
-        'content': 'this is the content post',
-        'author': '1',
-        'excerpt': 'Exceptional post!',
-        'format': 'standard'
-        }
+print("%s posts créés" % nb)
 
 #r = requests.post(url + '/posts', headers=headers, json=post)
 #print('Your post is published on ' + json.loads(r.content)['link'])
