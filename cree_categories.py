@@ -9,8 +9,8 @@ import sys
 
 AUTHOR = 1 # On ne peut pas publier des articles avec l'API pour un autre auteur que celui qui se connecte
 
-FILE = "categories.csv"
-CATEGORY_FILE = "categories.json"
+FILE = "data/categories.csv"
+CATEGORY_FILE = "data/categories.json"
 
 USER = 'ben'
 PYTHONAPP = "od0B LIm2 HQUo wbMq n3R6 gwq6"
