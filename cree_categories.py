@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+Crée les catégories qui n'existent pas encore dans le nouveau blog et enregistre un fichier json des correspondances d'id
+Le script principal fonctionne avec un fichier CSV des catégories de l'ancien blog, mais les fonctions peuvent être appelées depuis d'autres
+scripts pour s'adapter à d'autres formats.
+"""
 import requests
 import json
 import base64
@@ -42,12 +47,29 @@ def send(category):
         print(c)
         return False
 
-def process(row, new_cats):
-    old_id = row[0]
-    name = row[2]
-    slug = row[3].lower()
+def parse_csv(row):
+    val = {}
+    val['old_id'] = row[0]
+    val['name'] = row[2]
+    val['slug'] = row[3].lower()
     #description = row[4]
-    description = ""
+    val['description'] = ""
+
+    return val
+
+
+def process(ancien, new_cats):
+    """
+    ancien est un dictionnaire contenant :
+    old_id
+    name
+    slug
+    """
+    old_id = ancien["old_id"]
+    name = ancien["name"]
+    slug = ancien["slug"].lower()
+    #description = row[4]
+    description = ancien["description"]
 
     if slug in new_cats.keys():
         print("%s existe déjà" % slug)
@@ -96,6 +118,7 @@ if __name__ == "__main__":
     with open(FILE) as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in spamreader:
-            process(row, new_cats)
+            valeurs = parse_csv(row)
+            process(valeurs, new_cats)
 
     save2json(new_cats, CATEGORY_FILE)
