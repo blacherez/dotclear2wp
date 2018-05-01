@@ -19,19 +19,6 @@ URL = "http://lacherez.info/maison/wp-json/wp/v2"
 token = base64.standard_b64encode((USER + ':' + PYTHONAPP).encode("ascii"))
 HEADERS = {'Authorization': 'Basic ' + token.decode("utf-8")}
 
-# On récupère les catégories sur le site pour éviter de les créer en doublon
-params = {"per_page": 100}
-r = requests.get(URL + '/categories', headers=HEADERS, params = params)
-if r.ok:
-    remote_cats = json.loads(r.content.decode("utf-8"))
-    print("%s catégories trouvées" % len(remote_cats))
-else:
-    print(json.loads(r.content.decode("utf-8")))
-    sys.exit(3)
-new_cats = {}
-for cat in remote_cats:
-    print(cat["slug"])
-    new_cats[cat["slug"]] = {"nouvel_id": str(cat["id"])}
 
 
 def create_cat(name, slug, description, parent=0):
@@ -77,10 +64,37 @@ def process(row):
         else:
             print(cat)
 
-with open(FILE) as csvfile:
-    spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
-    for row in spamreader:
-        process(row)
+def get_remote_cats():
+    params = {"per_page": 100}
+    r = requests.get(URL + '/categories', headers=HEADERS, params = params)
+    if r.ok:
+        remote_cats = json.loads(r.content.decode("utf-8"))
+        print("%s catégories trouvées" % len(remote_cats))
+    else:
+        print(json.loads(r.content.decode("utf-8")))
+        return None
 
-with open(CATEGORY_FILE, "w") as f:
-    json.dump(new_cats, f)
+    new_cats = {}
+    for cat in remote_cats:
+        print(cat["slug"])
+        new_cats[cat["slug"]] = {"nouvel_id": str(cat["id"])}
+    return new_cats
+
+def save2json(jsonfile=CATEGORY_FILE):
+    with open(jsonfile, "w") as f:
+        json.dump(new_cats, f)
+
+if __name__ == "__main__":
+    # On récupère les catégories sur le site pour éviter de les créer en doublon
+    c = get_remote_cats()
+    if c:
+        new_cats = c
+    else:
+        sys.exit(3)
+
+    with open(FILE) as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
+        for row in spamreader:
+            process(row)
+
+    save2json(CATEGORY_FILE)
