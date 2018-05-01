@@ -8,8 +8,10 @@ import os
 
 AUTHOR = 1 # On ne peut pas publier des articles avec l'API pour un autre auteur que celui qui se connecte
 
-FILE = "data/posts3.csv"
+FILE = "data/30posts.csv"
 JSON_CATEGORIES = "data/categories.json"
+
+BLOG_ID = "blog" # Identifiant du blog à transférer
 
 USER = 'ben'
 PYTHONAPP = "od0B LIm2 HQUo wbMq n3R6 gwq6"
@@ -59,21 +61,46 @@ def publier(post):
         print(c)
         return False
 
+def parse_csv(row):
+    valeurs = {}
+    valeurs["blog_id"] = row[1]
+    valeurs["categorie"] = row[3]
+    valeurs["date"] = row[4]
+    valeurs["slug"] = row[11]
+    valeurs["title"] = row[13]
+    valeurs["content"] = row[16]
+    valeurs["excerpt"] = ""
+    valeurs["status"] = row[20]
+    return valeurs
 
-def process(row):
-    categorie = [nouvelle_categorie[row[3]]]
-    date = row[4]
-    date_pub = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
-    slug = row[11]
-    title = row[13]
-    content = row[16]
-    excerpt = ""
-    status = row[20]
-
+def process(valeurs, nouvelle_categorie, blog):
+    """
+    Traite un article.
+    valeur est un dictionnaire comportant :
+        categorie : ancien id de catégorie
+        date : date telle qu'elle est dans la base de dc (ie AAAA-MM-JJ HH:MM:SS)
+        slug
+        title
+        content
+        excerpt
+        status
+        blog_id
+    """
+    if valeurs["categorie"] in nouvelle_categorie:
+        categorie = [nouvelle_categorie[valeurs["categorie"]]]
+    else:
+        categorie = []
+    date_pub = datetime.datetime.strptime(valeurs["date"], "%Y-%m-%d %H:%M:%S")
+    title = valeurs["title"]
+    blog_id = valeurs["blog_id"]
+    slug = valeurs["slug"]
+    content = valeurs["content"]
+    excerpt = valeurs["excerpt"]
+    status = valeurs["status"]
     # print(title)
     # print(categorie)
-    print("%s (cat: %s) : %s" % (title, categorie, status))
-    return 0
+    print("%s (cat: %s) : %s, %s" % (title, categorie, status, blog_id))
+    return title
     p = create_post(date_pub, title, slug, content, excerpt, categorie)
     #print(p)
     r = publier(p)
@@ -86,11 +113,13 @@ if __name__ == '__main__':
         #spamreader = csv.reader(csvfile, "unix", delimiter=',', quotechar='"', escapechar='\\', doublequote=False, quoting=csv.QUOTE_ALL)
         spamreader = csv.reader(csvfile, "unix")
         for row in spamreader:
-            a = process(row)
-            if a:
-                nb += 1
+            valeurs = parse_csv(row)
+            if valeurs:
+                print(valeurs)
+                a = process(valeurs, nouvelle_categorie, BLOG_ID)
+                if a:
+                    nb += 1
+            else:
+                print("Rien pour %s" % row[:4])
 
     print("%s posts créés" % nb)
-
-#r = requests.post(url + '/posts', headers=headers, json=post)
-#print('Your post is published on ' + json.loads(r.content)['link'])
