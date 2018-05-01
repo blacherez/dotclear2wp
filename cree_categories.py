@@ -16,6 +16,7 @@ AUTHOR = 1 # On ne peut pas publier des articles avec l'API pour un autre auteur
 
 FILE = "data/categories.csv"
 CATEGORY_FILE = "data/categories.json"
+BLOG_ID = "blog" # ID du blog qu'on veut transférer
 
 USER = 'ben'
 PYTHONAPP = "od0B LIm2 HQUo wbMq n3R6 gwq6"
@@ -23,7 +24,6 @@ URL = "http://lacherez.info/maison/wp-json/wp/v2"
 
 token = base64.standard_b64encode((USER + ':' + PYTHONAPP).encode("ascii"))
 HEADERS = {'Authorization': 'Basic ' + token.decode("utf-8")}
-
 
 
 def create_cat(name, slug, description, parent=0):
@@ -58,19 +58,21 @@ def parse_csv(row):
     return val
 
 
-def process(ancien, new_cats):
+def process(ancien, new_cats, blog_id):
     """
     ancien est un dictionnaire contenant :
     old_id
     name
     slug
     description
+    blog_id
     """
     old_id = ancien["old_id"]
     name = ancien["name"]
     slug = ancien["slug"].lower()
     #description = row[4]
     description = ancien["description"]
+    blog_id = ancien["blog_id"]
 
     if slug in new_cats.keys():
         print("%s existe déjà" % slug)
@@ -122,6 +124,6 @@ if __name__ == "__main__":
             valeurs = parse_csv(row)
             print(valeurs)
             if valeurs:
-                new_cats = process(valeurs, new_cats)
+                new_cats = process(valeurs, new_cats, BLOG_ID)
 
     save2json(new_cats, CATEGORY_FILE)
