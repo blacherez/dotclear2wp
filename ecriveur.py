@@ -86,6 +86,9 @@ def process(valeurs, nouvelle_categorie, blog):
         status
         blog_id
     """
+    if valeurs["blog_id"] == blog:
+        # Le billet n'est pas dans le blog à transférer
+        return None
     if valeurs["categorie"] in nouvelle_categorie:
         categorie = [nouvelle_categorie[valeurs["categorie"]]]
     else:
