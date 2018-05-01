@@ -64,6 +64,7 @@ def process(ancien, new_cats):
     old_id
     name
     slug
+    description
     """
     old_id = ancien["old_id"]
     name = ancien["name"]
