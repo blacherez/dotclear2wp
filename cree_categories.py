@@ -42,7 +42,7 @@ def send(category):
         print(c)
         return False
 
-def process(row):
+def process(row, new_cats):
     old_id = row[0]
     name = row[2]
     slug = row[3].lower()
@@ -63,24 +63,25 @@ def process(row):
             }
         else:
             print(cat)
+        return new_cats
 
 def get_remote_cats():
     params = {"per_page": 100}
     r = requests.get(URL + '/categories', headers=HEADERS, params = params)
     if r.ok:
         remote_cats = json.loads(r.content.decode("utf-8"))
-        print("%s catégories trouvées" % len(remote_cats))
+        #print("%s catégories trouvées" % len(remote_cats))
     else:
         print(json.loads(r.content.decode("utf-8")))
         return None
 
     new_cats = {}
     for cat in remote_cats:
-        print(cat["slug"])
+        #print(cat["slug"])
         new_cats[cat["slug"]] = {"nouvel_id": str(cat["id"])}
     return new_cats
 
-def save2json(jsonfile=CATEGORY_FILE):
+def save2json(new_cats, jsonfile=CATEGORY_FILE):
     with open(jsonfile, "w") as f:
         json.dump(new_cats, f)
 
@@ -95,6 +96,6 @@ if __name__ == "__main__":
     with open(FILE) as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in spamreader:
-            process(row)
+            process(row, new_cats)
 
-    save2json(CATEGORY_FILE)
+    save2json(new_cats, CATEGORY_FILE)
