@@ -85,7 +85,7 @@ def process(ancien, new_cats):
             }
         else:
             print(cat)
-        return new_cats
+    return new_cats
 
 def get_remote_cats():
     params = {"per_page": 100}
@@ -119,6 +119,8 @@ if __name__ == "__main__":
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in spamreader:
             valeurs = parse_csv(row)
-            process(valeurs, new_cats)
+            print(valeurs)
+            if valeurs:
+                new_cats = process(valeurs, new_cats)
 
     save2json(new_cats, CATEGORY_FILE)
