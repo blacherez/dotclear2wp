@@ -58,7 +58,7 @@ def parse_csv(row):
     return val
 
 
-def process(ancien, new_cats, blog_id):
+def process(ancien, new_cats, blog):
     """
     ancien est un dictionnaire contenant :
     old_id
@@ -73,6 +73,10 @@ def process(ancien, new_cats, blog_id):
     #description = row[4]
     description = ancien["description"]
     blog_id = ancien["blog_id"]
+
+    if not blog_id == blog:
+        # La ligne ne concerne pas le blog à transférer
+        return new_cats
 
     if slug in new_cats.keys():
         print("%s existe déjà" % slug)
