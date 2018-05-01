@@ -8,13 +8,9 @@ def parse(ligne):
     #print("Processing line %s" % ligne[:10])
     # On n'analyse la ligne que si elle correspond à un billet actif (càd que son état est 1)
     if actif.search(ligne):
-        #print("Actif")
-        #print(actif.search(ligne))
         r = motif_ligne.search(ligne)
         if r:
             return r.groupdict()
-    else:
-        print("Skipped")
     return None
 
 
