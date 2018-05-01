@@ -5,16 +5,16 @@ On utilise un fichier SQL pour les catégories de l'ancien blog et on utilise le
 """
 import re
 import cree_categories as cc
-#FILE = "data/categories.sql"
-FILE = "test_cat.sql"
-CATEGORY_FILE = "data/categories_from_sql.json"
+FILE = "data/categories.sql"
+CATEGORY_FILE = "data/categories.json"
 
 BLOG_ID = "blog" # ID du blog qu'on veut transférer
 
-MOTIF_LIGNE = re.compile(r"(?P<cat_id>\d+), '(?P<blog_id>([^']*(\\'|'')?)*)', '(?P<cat_title>([^']*(\\'|'')?)*)', '(?P<cat_url>([^']*(\\'|'')?)*)', '(?P<cat_desc>([^']*(\\'|'')?)*)', (?P<cat_position>\d+), (?P<cat_lft>\d+), (?P<cat_rgt>\d+)")
+MOTIF_LIGNE = re.compile(r"(?P<cat_id>\d+), '(?P<blog_id>([^']*(\\'|'')?)*)', '(?P<cat_title>([^']*(\\'|'')?)*)', '(?P<cat_url>([^']*(\\'|'')?)*)', '?(?P<cat_desc>([^']*(\\'|'')?)*)'?, (?P<cat_position>\d+), (?P<cat_lft>\d+), (?P<cat_rgt>\d+)")
 
 def parse_sql(line):
     valeurs = {}
+    print(line[:12])
     r = MOTIF_LIGNE.search(line)
     if r:
         valeurs["old_id"] = r.group("cat_id")
@@ -39,6 +39,8 @@ if __name__ == "__main__":
     for line in lines:
         valeurs = parse_sql(line)
         if valeurs:
+            print(valeurs["name"])
             new_cats = cc.process(valeurs, new_cats, BLOG_ID)
+
 
     cc.save2json(new_cats, CATEGORY_FILE)
