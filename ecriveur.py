@@ -6,25 +6,7 @@ import csv
 import datetime
 import os
 
-# Voir https://stackoverflow.com/questions/4020539/process-escape-sequences-in-a-string-in-python/4020824
-import re
-import codecs
-
-ESCAPE_SEQUENCE_RE = re.compile(r'''
-    ( \\U........      # 8-digit hex escapes
-    | \\u....          # 4-digit hex escapes
-    | \\x..            # 2-digit hex escapes
-    | \\[0-7]{1,3}     # Octal escapes
-    | \\N\{[^}]+\}     # Unicode characters by name
-    | \\[\\'"abfnrtv]  # Single-character escapes
-    )''', re.UNICODE | re.VERBOSE)
-
-def decode_escapes(s):
-    def decode_match(match):
-        return codecs.decode(match.group(0), 'unicode-escape')
-
-    return ESCAPE_SEQUENCE_RE.sub(decode_match, s)
-
+import lib
 
 AUTHOR = 1 # On ne peut pas publier des articles avec l'API pour un autre auteur que celui qui se connecte
 
@@ -117,11 +99,11 @@ def process(valeurs, nouvelle_categorie, blog):
         categorie = []
     date_pub = datetime.datetime.strptime(valeurs["date"], "%Y-%m-%d %H:%M:%S")
     #title = bytes(valeurs["title"], "utf-8").decode('unicode_escape').encode("utf-8")
-    title = decode_escapes(valeurs["title"])
+    title = lib.decode_escapes(valeurs["title"])
     blog_id = valeurs["blog_id"]
     slug = valeurs["slug"]
-    content = decode_escapes(valeurs["content"])
-    excerpt = decode_escapes(valeurs["excerpt"])
+    content = lib.decode_escapes(valeurs["content"])
+    excerpt = lib.decode_escapes(valeurs["excerpt"])
     status = valeurs["status"]
     # print(title)
     # print(categorie)
