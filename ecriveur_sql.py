@@ -4,7 +4,9 @@ Crée les billets depuis un fichier SQL
 """
 import ecriveur as e
 import line_parser
+
 import sys
+import datetime
 
 FILE = "data/30posts.sql"
 BLOG_ID = "blog"
@@ -24,6 +26,7 @@ def parse_sql(line):
         return valeurs
 
 if __name__ == '__main__':
+    debut = datetime.datetime.utcnow()
     nb = 0
     with open(FILE) as f:
         for l in f.readlines():
@@ -33,5 +36,6 @@ if __name__ == '__main__':
                 a = e.process(billet, e.nouvelle_categorie, BLOG_ID)
                 if a:
                     nb += 1
-
-    print("%s posts créés" % nb)
+    fin = datetime.datetime.utcnow()
+    duree = fin - debut
+    print("%s posts créés en %s" % (nb, duree))
