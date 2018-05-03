@@ -35,9 +35,6 @@ if os.path.exists(JSON_CATEGORIES):
                     nouvelle_categorie[categorie["ancien_id"]] = categorie["nouvel_id"]
 else:
     print("Le fichier %s n'existe pas, les billets créés n'auront pas de catégorie" % JSON_CATEGORIES)
-print(nouvelle_categorie)
-
-
 
 def create_post(date, title, slug, content, excerpt, categories, status="publish"):
     """Crée le dictionnaire correspondant au post.

@@ -32,7 +32,6 @@ if __name__ == '__main__':
         for l in f.readlines():
             billet = parse_sql(l)
             if billet:
-                print(billet["title"])
                 a = e.process(billet, e.nouvelle_categorie, BLOG_ID)
                 if a:
                     nb += 1
