@@ -12,6 +12,8 @@ import datetime
 import html
 import sys
 
+import lib
+
 AUTHOR = 1 # On ne peut pas publier des articles avec l'API pour un autre auteur que celui qui se connecte
 
 FILE = "data/categories.csv"
@@ -30,9 +32,9 @@ def create_cat(name, slug, description, parent=0):
     """Crée le dictionnaire correspondant à la catégorie.
     """
     category = {}
-    category["name"] = html.escape(name)
+    category["name"] = lib.decode_escapes(name)
     category["slug"] = slug
-    category["description"] = description
+    category["description"] = lib.decode_escapes(description)
     category["parent"] = parent
 
     return category
@@ -56,7 +58,6 @@ def parse_csv(row):
     val['description'] = ""
 
     return val
-
 
 def process(ancien, new_cats, blog):
     """
