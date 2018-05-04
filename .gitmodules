@@ -1,0 +1,3 @@
+[submodule "vendor/recupimages"]
+	path = vendor/recupimages
+	url = https://github.com/blacherez/recupimages.git
