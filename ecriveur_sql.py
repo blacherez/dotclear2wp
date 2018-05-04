@@ -8,7 +8,7 @@ import line_parser
 import sys
 import datetime
 
-FILE = "data/30posts.sql"
+FILE = "data/posts-cleaned.sql"
 BLOG_ID = "blog"
 
 def parse_sql(line):
