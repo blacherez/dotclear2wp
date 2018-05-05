@@ -7,6 +7,7 @@ import datetime
 import os
 
 import lib
+import vendor.recupimages.recupimages as ri
 
 AUTHOR = 1 # On ne peut pas publier des articles avec l'API pour un autre auteur que celui qui se connecte
 
@@ -44,7 +45,7 @@ def create_post(date, title, slug, content, excerpt, categories, status="publish
     post['date'] = date.isoformat()
     post['title'] = title
     post['slug'] = slug
-    post['content'] = content
+    post['content'] = ri.traite(content)
     post['status'] = status
     post['author'] = AUTHOR # On ne peut pas publier pour un autre auteur que celui qui est connecté
     post['excerpt'] = excerpt
