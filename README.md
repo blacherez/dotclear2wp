@@ -1,22 +1,17 @@
-Environnement Anaconda : maison_montagne
+Scripts pour transférer les billets d'un blog Dotclear vers un Wordpress
 
-## Obsolète ?
-```bash
-$ source ~/anaconda3/bin/activate maison_montagne2
-```
+# Etapes à suivre
 
-Installation WP API :
+## Installation des composants nécessaires sur le WP
 
-```bash
-$  pip install wordpress-ap
-```
+## Récupération des catégories
+Script cree_categories_sql.py
 
-WP installé sur 1and1 :
-Compte : ben , mdp : mtP3Ymx3nc
-http://lacherez.info/maison
+## Récupération des billets
+Script ecriveur_sql.py
 
-Mot de passe d'application pour le compte ben : od0B LIm2 HQUo wbMq n3R6 gwq6
+Ce script récupère les billets de l'ancien blog dans le fichier SQL de dump de la base de données du Dotclear (la version CSV ne fonctionne pas) et les crée dans le blog Wordpress, en modifiant à la volée les chemins des images.
 
-Mot de passe pour utilisateur dotclear : DakN Gazk 4z6Y klYg q12L xzow
+Les images sont copiées localement, d'où l'étape suivante.
 
-## Fin de la partie obsolète ?
+## Copie du répertoire des images à l'emplacement correct sur le serveur du WP
