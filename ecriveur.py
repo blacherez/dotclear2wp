@@ -8,17 +8,9 @@ import os
 
 import lib
 import vendor.recupimages.recupimages as ri
+from config import *
 
-AUTHOR = 1 # On ne peut pas publier des articles avec l'API pour un autre auteur que celui qui se connecte
-
-FILE = "data/30posts.csv"
-JSON_CATEGORIES = "data/categories.json"
-
-BLOG_ID = "blog" # Identifiant du blog à transférer
-
-USER = 'ben'
-PYTHONAPP = "od0B LIm2 HQUo wbMq n3R6 gwq6"
-URL = "http://lacherez.info/maison/wp-json/wp/v2"
+FILE = CSVFILE
 
 token = base64.standard_b64encode((USER + ':' + PYTHONAPP).encode("ascii"))
 headers = {'Authorization': 'Basic ' + token.decode("utf-8")}

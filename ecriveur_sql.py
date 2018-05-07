@@ -2,13 +2,14 @@
 """
 Crée les billets depuis un fichier SQL
 """
-import ecriveur as e
-import line_parser
-
 import sys
 import datetime
 
-FILE = "data/posts-cleaned.sql"
+import ecriveur as e
+import line_parser
+from config import *
+
+FILE = SQLFILE
 BLOG_ID = "blog"
 
 def parse_sql(line):
