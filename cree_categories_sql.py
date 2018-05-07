@@ -4,11 +4,12 @@ Crée les catégories qui n'existent pas encore dans le nouveau blog et enregist
 On utilise un fichier SQL pour les catégories de l'ancien blog et on utilise les fonctions du module cree_categories.py
 """
 import re
-import cree_categories as cc
-FILE = "data/categories.sql"
-CATEGORY_FILE = "data/categories.json"
 
-BLOG_ID = "blog" # ID du blog qu'on veut transférer
+import cree_categories as cc
+from config import *
+
+FILE = SQLCATEGORIES
+CATEGORY_FILE = JSON_CATEGORIES
 
 MOTIF_LIGNE = re.compile(r"(?P<cat_id>\d+), '(?P<blog_id>([^']*(\\'|'')?)*)', '(?P<cat_title>([^']*(\\'|'')?)*)', '(?P<cat_url>([^']*(\\'|'')?)*)', '?(?P<cat_desc>([^']*(\\'|'')?)*)'?, (?P<cat_position>\d+), (?P<cat_lft>\d+), (?P<cat_rgt>\d+)")
 

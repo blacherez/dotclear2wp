@@ -13,16 +13,10 @@ import html
 import sys
 
 import lib
+from config import *
 
-AUTHOR = 1 # On ne peut pas publier des articles avec l'API pour un autre auteur que celui qui se connecte
-
-FILE = "data/categories.csv"
-CATEGORY_FILE = "data/categories.json"
-BLOG_ID = "blog" # ID du blog qu'on veut transférer
-
-USER = 'ben'
-PYTHONAPP = "od0B LIm2 HQUo wbMq n3R6 gwq6"
-URL = "http://lacherez.info/maison/wp-json/wp/v2"
+FILE = SQLCATEGORIES
+CATEGORY_FILE = JSON_CATEGORIES
 
 token = base64.standard_b64encode((USER + ':' + PYTHONAPP).encode("ascii"))
 HEADERS = {'Authorization': 'Basic ' + token.decode("utf-8")}
