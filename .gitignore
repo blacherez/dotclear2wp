@@ -3,3 +3,4 @@ data/*
 __pycache__
 *.pyc
 archives_images
+doc/README-local.md
