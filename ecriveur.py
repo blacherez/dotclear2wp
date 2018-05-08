@@ -5,6 +5,7 @@ import base64
 import csv
 import datetime
 import os
+import sys
 
 import lib
 import vendor.recupimages.recupimages as ri
@@ -47,13 +48,16 @@ def create_post(date, title, slug, content, excerpt, categories, status="publish
     return post
 
 def publier(post):
-    r = requests.post(URL + '/posts', headers=headers, json=post)
-    c = json.loads(r.content.decode("utf-8"))
-    if r.ok:
-        return c["link"]
-    else:
-        print(c)
-        return False
+    try:
+        r = requests.post(URL + '/posts', headers=headers, json=post)
+        c = json.loads(r.content.decode("utf-8"))
+        if r.ok:
+            return c["link"]
+        else:
+            sys.stderr.write(c + "\n")
+    except:
+        sys.stderr.write("Erreur pour le post %s : %s\n" % (post["title"], sys.exc_info()[0]))
+    return False
 
 def parse_csv(row):
     valeurs = {}
