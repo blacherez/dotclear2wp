@@ -18,6 +18,23 @@ Once the Add New button is clicked, your new application password will appear. B
 
 Modifier le fichier .htaccess selon indications https://github.com/georgestephanis/application-passwords/wiki/Basic-Authorization-Header----Missing
 
+Soit :
+
+```apacheconf
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization}]
+RewriteBase /maison/
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /maison/index.php [L]
+</IfModule>
+
+# END WordPress
+```
+
 ## Récupération des catégories
 Script cree_categories_sql.py
 
