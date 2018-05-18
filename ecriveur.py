@@ -54,7 +54,7 @@ def publier(post):
         if r.ok:
             return c["link"]
         else:
-            sys.stderr.write(c + "\n")
+            sys.stderr.write("%s %s\n" % (c["message"], c["data"]))
     except:
         sys.stderr.write("Erreur pour le post %s : %s\n" % (post["title"], sys.exc_info()[0]))
     return False
