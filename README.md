@@ -40,6 +40,7 @@ RewriteRule . /maison/index.php [L]
 
 # END WordPress
 ```
+*NB: Ce fichier a tendance à être écrasé par une version de base (sans la ligne `RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization}]`), son absence provoque un code HTTP 401 et un message "Désolé, vous n’avez pas l’autorisation de créer des contenus sous cet identifiant."
 
 ## Récupération des catégories
 Script cree_categories_sql.py
