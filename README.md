@@ -2,6 +2,12 @@ Scripts pour transférer les billets d'un blog Dotclear vers un Wordpress
 
 # Etapes à suivre
 
+## Modules python nécessaires
+- requests
+- bs4
+- html5lib
+
+
 ## Installation des composants nécessaires sur le WP
 Extension Application passwords
 
